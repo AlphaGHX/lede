@@ -1,4 +1,4 @@
-# 
+#
 # <https://github.com/KFERMercer/OpenWrt-CI>
 #
 # Copyright (C) 2019 P3TERX
@@ -8,16 +8,13 @@
 name: OpenWrt-CI
 
 on:
-  schedule:
-    - cron: 0 20 * * *
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-
   build_openwrt:
-
     name: Build OpenWrt Firmware
 
     runs-on: ubuntu-latest
@@ -52,11 +49,11 @@ jobs:
         run: make defconfig
 
       - name: Download packages
-        run: make download -j16
+        run: make download -j$(nproc)
 
       - name: Compile firmware
         run: |
-          make -j$(nproc) || make -j1 V=s
+          make V=s -j$(nproc)
           echo "======================="
           echo "Space usage:"
           echo "======================="
